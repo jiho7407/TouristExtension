@@ -18,4 +18,20 @@ function walk(node) {
     }
 }
 
+function walk2(node) {
+    if (node.nodeType === Node.TEXT_NODE && !shouldSkip(node)) {
+        const regex = /도리/gi;
+        if (regex.test(node.textContent)) {
+            const span = document.createElement('span');
+            span.innerHTML = node.textContent.replace(regex, (match) => {
+                return `<span style="font-size:1.5em;">김도현</span>`;
+            });
+            node.parentNode.replaceChild(span, node);
+        }
+    } else if(node.nodeType === Node.ELEMENT_NODE && !shouldSkip(node)) {
+        node.childNodes.forEach(child => walk2(child));
+    }
+}
+
 walk(document.body);
+walk2(document.body);
